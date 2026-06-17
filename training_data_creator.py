@@ -1,10 +1,16 @@
 import cv2
 import pyautogui
 import random
+import glob
+import os
 
-# Get current coordinates
+# TODO: Implement Path functionality to save images in separate folder.
+from pathlib import Path 
+
 # Initialize the default camera (0 is usually the built-in FaceTime HD camera for Mac)
 available = False
+
+current_working_directory = pathlib.Path(__file__).parent.resolve()
 
 for i in range(10):
     cap = cv2.VideoCapture(i)
@@ -35,20 +41,21 @@ while True:
         break
 
     if key == ord('c'):
-        # Save the current frame as an image file
+        # Get current coordinates
         x, y = pyautogui.position()
-        
-        seed = random.randint(10**9)
+
+        seed = random.randint(0, 10**9)
 
         print(f"X: {x}, Y: {y}")
         filename = f'{seed}-{x}-{y}.jpg'
 
+        # Save the current frame as an image file
         cv2.imwrite(filename, frame)
         print(f"Frame captured and saved as '{filename}'.")
 
     if key == ord('b'):
         # Save samples when not looking at the screen.
-        seed = random.randint(10**9)
+        seed = random.randint(0, 10**9)
         filename = f'{seed}-OUTSIDE.jpg'
 
         cv2.imwrite(filename, frame)
@@ -57,3 +64,7 @@ while True:
 # Release the camera hardware resource and destroy all active windows
 cap.release()
 cv2.destroyAllWindows()
+
+extension = '*.jpg'
+print(current_working_directory)
+print(type(current_working_directory))
